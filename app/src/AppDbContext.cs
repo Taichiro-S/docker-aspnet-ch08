@@ -7,6 +7,5 @@ public class AppDbContext : DbContext
     {
     }
 
-    // DbSet は後から追加
-    // public DbSet<User> Users => Set<User>();
+    public DbSet<User> Users => Set<User>();
 }

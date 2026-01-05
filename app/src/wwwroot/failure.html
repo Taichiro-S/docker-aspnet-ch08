@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>ログイン失敗</title>
+    <script src="https://cdn.webix.com/edge/webix.js"></script>
+    <link rel="stylesheet" href="https://cdn.webix.com/edge/webix.css" />
+  </head>
+  <body>
+    <script>
+      webix.ui({
+        rows: [
+          {
+            template: "ログイン失敗",
+            type: "header",
+            css: "webix_header"
+          },
+          {
+            template: "メールアドレスまたはパスワードが正しくありません",
+            height: 100,
+            css: "error_message"
+          },
+          {
+            margin: 10,
+            cols: [
+              {
+                view: "button",
+                value: "ログインページに戻る",
+                css: "webix_primary",
+                click: function() {
+                  window.location.href = "/login.html";
+                }
+              },
+              {
+                view: "button",
+                value: "新規登録",
+                click: function() {
+                  window.location.href = "/register.html";
+                }
+              }
+            ]
+          }
+        ]
+      });
+    </script>
+    <style>
+      .error_message {
+        color: red;
+        text-align: center;
+        font-size: 18px;
+        padding: 20px;
+      }
+    </style>
+  </body>
+</html>

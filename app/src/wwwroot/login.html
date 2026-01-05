@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>ログイン</title>
+    <script src="https://cdn.webix.com/edge/webix.js"></script>
+    <link rel="stylesheet" href="https://cdn.webix.com/edge/webix.css" />
+  </head>
+  <body>
+    <script>
+      webix.ui({
+        rows: [
+          {
+            template: "ログイン",
+            type: "header",
+            css: "webix_header"
+          },
+          {
+            view: "form",
+            id: "loginForm",
+            width: 400,
+            elements: [
+              {
+                view: "text",
+                name: "email",
+                label: "メールアドレス",
+                labelWidth: 150,
+                required: true
+              },
+              {
+                view: "text",
+                type: "password",
+                name: "password",
+                label: "パスワード",
+                labelWidth: 150,
+                required: true
+              },
+              {
+                margin: 10,
+                cols: [
+                  {
+                    view: "button",
+                    value: "ログイン",
+                    css: "webix_primary",
+                    click: function() {
+                      const form = $$("loginForm");
+                      if (form.validate()) {
+                        const values = form.getValues();
+                        
+                        webix.ajax()
+                          .post("/api/auth/login", values)
+                          .then((res) => {
+                            const data = res.json();
+                            // ユーザ情報をローカルストレージに保存
+                            localStorage.setItem("user", JSON.stringify(data));
+                            window.location.href = "/success.html";
+                          })
+                          .catch((err) => {
+                            window.location.href = "/failure.html";
+                          });
+                      }
+                    }
+                  },
+                  {
+                    view: "button",
+                    value: "新規登録",
+                    click: function() {
+                      window.location.href = "/register.html";
+                    }
+                  }
+                ]
+              }
+            ],
+            rules: {
+              email: webix.rules.isEmail,
+              password: webix.rules.isNotEmpty
+            }
+          }
+        ]
+      });
+    </script>
+  </body>
+</html>

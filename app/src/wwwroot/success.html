@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>ログイン成功</title>
+    <script src="https://cdn.webix.com/edge/webix.js"></script>
+    <link rel="stylesheet" href="https://cdn.webix.com/edge/webix.css" />
+  </head>
+  <body>
+    <script>
+      const userStr = localStorage.getItem("user");
+      if (!userStr) {
+        window.location.href = "/login.html";
+      }
+      
+      const user = JSON.parse(userStr);
+      
+      // 管理者の場合は会員一覧を表示
+      if (user.role === "Admin") {
+        webix.ui({
+          rows: [
+            {
+              template: "ログイン成功（管理者）",
+              type: "header",
+              css: "webix_header"
+            },
+            {
+              template: `ようこそ、${user.email} さん（管理者）`,
+              height: 50
+            },
+            {
+              view: "datatable",
+              id: "usersTable",
+              columns: [
+                { id: "id", header: "ID", width: 80 },
+                { id: "email", header: "メールアドレス", fillspace: true },
+                { id: "role", header: "ロール", width: 100 },
+                { id: "createdAt", header: "登録日時", width: 180 }
+              ],
+              autoheight: true,
+              autowidth: true
+            },
+            {
+              view: "button",
+              value: "ログアウト",
+              click: function() {
+                localStorage.removeItem("user");
+                window.location.href = "/login.html";
+              }
+            }
+          ]
+        });
+        
+        // 会員一覧を取得
+        webix.ajax()
+          .get("/api/auth/users")
+          .then((res) => {
+            const users = res.json();
+            $$("usersTable").parse(users);
+          })
+          .catch((err) => {
+            webix.message({
+              type: "error",
+              text: "ユーザ一覧の取得に失敗しました"
+            });
+          });
+      } else {
+        // 一般会員の場合
+        webix.ui({
+          rows: [
+            {
+              template: "ログイン成功",
+              type: "header",
+              css: "webix_header"
+            },
+            {
+              template: `ようこそ、${user.email} さん`,
+              height: 100
+            },
+            {
+              view: "button",
+              value: "ログアウト",
+              click: function() {
+                localStorage.removeItem("user");
+                window.location.href = "/login.html";
+              }
+            }
+          ]
+        });
+      }
+    </script>
+  </body>
+</html>

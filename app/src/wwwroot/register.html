@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>ユーザ登録</title>
+    <script src="https://cdn.webix.com/edge/webix.js"></script>
+    <link rel="stylesheet" href="https://cdn.webix.com/edge/webix.css" />
+  </head>
+  <body>
+    <script>
+      webix.ui({
+        rows: [
+          {
+            template: "ユーザ登録",
+            type: "header",
+            css: "webix_header"
+          },
+          {
+            view: "form",
+            id: "registerForm",
+            width: 400,
+            elements: [
+              {
+                view: "text",
+                name: "email",
+                label: "メールアドレス",
+                labelWidth: 150,
+                required: true
+              },
+              {
+                view: "text",
+                type: "password",
+                name: "password",
+                label: "パスワード",
+                labelWidth: 150,
+                required: true
+              },
+              {
+                margin: 10,
+                cols: [
+                  {
+                    view: "button",
+                    value: "登録",
+                    css: "webix_primary",
+                    click: function() {
+                      const form = $$("registerForm");
+                      if (form.validate()) {
+                        const values = form.getValues();
+                        
+                        webix.ajax()
+                          .post("/api/auth/register", values)
+                          .then((res) => {
+                            const data = res.json();
+                            webix.message({
+                              type: "success",
+                              text: data.message
+                            });
+                            setTimeout(() => {
+                              window.location.href = "/login.html";
+                            }, 1500);
+                          })
+                          .catch((err) => {
+                            const error = err.response ? JSON.parse(err.response) : {};
+                            webix.message({
+                              type: "error",
+                              text: error.message || "登録に失敗しました"
+                            });
+                          });
+                      }
+                    }
+                  },
+                  {
+                    view: "button",
+                    value: "ログインページへ",
+                    click: function() {
+                      window.location.href = "/login.html";
+                    }
+                  }
+                ]
+              }
+            ],
+            rules: {
+              email: webix.rules.isEmail,
+              password: webix.rules.isNotEmpty
+            }
+          }
+        ]
+      });
+    </script>
+  </body>
+</html>

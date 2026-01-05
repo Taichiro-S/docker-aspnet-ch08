@@ -9,12 +9,24 @@ builder.Services.AddDbContext<AppDbContext>(options =>
         builder.Configuration.GetConnectionString("Default")
     ));
 
+// CORS設定（開発環境用）
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", builder =>
+    {
+        builder.AllowAnyOrigin()
+               .AllowAnyMethod()
+               .AllowAnyHeader();
+    });
+});
+
 var app = builder.Build();
 
+app.UseCors("AllowAll");
 app.UseDefaultFiles(); // index.html
 app.UseStaticFiles();  // wwwroot
 
-// app.MapControllers();
+app.MapControllers(); // コントローラのマッピングを有効化
 
 app.MapGet("/api/health", async (AppDbContext db) =>
 {
