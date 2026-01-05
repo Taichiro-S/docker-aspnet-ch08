@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta charset="UTF-8" />
     <script src="https://cdn.webix.com/edge/webix.js"></script>
     <link rel="stylesheet" href="https://cdn.webix.com/edge/webix.css" />
   </head>
@@ -28,6 +29,20 @@
                 });
             },
           },
+          {
+            view: "button",
+            value: "ログインページへ",
+            click: function() {
+              window.location.href = "/login.html";
+            }
+          },
+          {
+            view: "button",
+            value: "ユーザ登録ページへ",
+            click: function() {
+              window.location.href = "/register.html";
+            }
+          }
         ],
       });
     </script>

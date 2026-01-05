@@ -8,8 +8,31 @@
     "vscode": {
       "extensions": [
         "ms-dotnettools.csharp",
+        "ms-dotnettools.csdevkit",
         "ms-azuretools.vscode-docker"
-      ]
+      ],
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash"
+      }
+    }
+  },
+  "forwardPorts": [5000, 5432, 8080, 5050],
+  "portsAttributes": {
+    "5000": {
+      "label": ".NET App",
+      "onAutoForward": "notify"
+    },
+    "8080": {
+      "label": "Nginx",
+      "onAutoForward": "notify"
+    },
+    "5432": {
+      "label": "PostgreSQL",
+      "onAutoForward": "silent"
+    },
+    "5050": {
+      "label": "pgAdmin",
+      "onAutoForward": "silent"
     }
   }
 }

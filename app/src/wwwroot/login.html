@@ -75,6 +75,13 @@
               email: webix.rules.isEmail,
               password: webix.rules.isNotEmpty
             }
+          },
+          {
+            view: "button",
+            value: "ホームへ",
+            click: function() {
+              window.location.href = "/index.html";
+            }
           }
         ]
       });
