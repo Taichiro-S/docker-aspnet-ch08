@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://cdn.webix.com/edge/webix.js"></script>
+    <link rel="stylesheet" href="https://cdn.webix.com/edge/webix.css" />
+  </head>
+  <body>
+    <script>
+      webix.ui({
+        rows: [
+          { template: "Webix + ASP.NET + PostgreSQL", type: "header" },
+          {
+            view: "button",
+            value: "DB Connection Check",
+            click: () => {
+              webix
+                .ajax()
+                .get("/api/health")
+                .then((res) => {
+                  const data = res.json();
+                  webix.message(data.message);
+                })
+                .catch((err) => {
+                  webix.message({
+                    type: "error",
+                    text: "Connection failed",
+                  });
+                });
+            },
+          },
+        ],
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,54 @@
+version: "3.9"
+
+services:
+  web:
+    build: ../web
+    ports:
+      - "8080:80"
+    depends_on:
+      - app
+    networks:
+      - devnet
+
+  app:
+    build: ../app
+    volumes:
+      - ../app:/workspace
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ConnectionStrings__Default:
+        Host=db;Port=5432;Database=appdb;Username=appuser;Password=apppass
+    depends_on:
+      - db
+    networks:
+      - devnet
+
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: appdb
+      POSTGRES_USER: appuser
+      POSTGRES_PASSWORD: apppass
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ../db/init:/docker-entrypoint-initdb.d
+    networks:
+      - devnet
+
+  pgadmin:
+    image: dpage/pgadmin4:8
+    environment:
+      PGADMIN_DEFAULT_EMAIL: dev@example.com
+      PGADMIN_DEFAULT_PASSWORD: devpass
+    ports:
+      - "5050:80"
+    depends_on:
+      - db
+    networks:
+      - devnet
+
+networks:
+  devnet:
+
+volumes:
+  pgdata:

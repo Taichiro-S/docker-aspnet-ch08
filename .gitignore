@@ -1,0 +1,24 @@
+# ===== .NET =====
+bin/
+obj/
+*.user
+*.suo
+*.cache
+*.log
+
+# ===== ASP.NET =====
+appsettings.*.json
+!appsettings.json
+
+# ===== Docker =====
+*.env
+
+# ===== VS Code =====
+.vscode/
+
+# ===== Dev Containers =====
+.devcontainer/.env
+
+# ===== OS =====
+.DS_Store
+Thumbs.db
